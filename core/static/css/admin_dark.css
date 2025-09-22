@@ -1,0 +1,28 @@
+/* Path: core/static/css/admin_dark.css */
+
+/*
+  Устанавливаем базовый размер шрифта для всей админки
+  и точечно настраиваем высоту полей ввода.
+*/
+
+/* 1. Основное правило для всех элементов внутри админки */
+#container,
+#container * { /* Звездочка (*) означает "любой дочерний элемент" */
+    font-size: 16px !important;
+    /* Ты можешь изменить 16px на 18px или любое другое значение */
+}
+
+
+/* 2. Настройка высоты полей ввода, чтобы текст не был сжатым */
+#container input[type="text"],
+#container input[type="password"],
+#container input[type="email"],
+#container input[type="url"],
+#container .vDateField,
+#container .vTimeField,
+#container select {
+    height: 38px !important;
+    box-sizing: border-box;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}

@@ -1,0 +1,93 @@
+{% load static %}
+{% load navigation_tags %}
+
+<!DOCTYPE html>
+<html lang="ru" x-data="{ open: false }" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}NetCore IT Solutions{% endblock %}</title>
+  
+  {% block meta_description %}
+  <meta name="description" content="NetCore IT Solutions: Профессиональная настройка и поддержка IT-инфраструктуры для малого и среднего бизнеса. Надежные IT-решения под ключ.">
+  {% endblock %}
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="{% static 'css/output.css' %}" rel="stylesheet"> 
+  <script src="//unpkg.com/alpinejs" defer></script>
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script> {# <-- 1. htmx ПОДКЛЮЧЕН #}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen"
+      x-data="{ scrolled: false }"
+      @scroll.window="scrolled = (window.scrollY > 10)"
+      hx-headers='{"X-Requested-With": "XMLHttpRequest"}'> {# <-- 2. АТРИБУТ ДЛЯ htmx ДОБАВЛЕН #}
+
+  <header class="sticky top-0 z-50 border-b transition-colors duration-300"
+          :class="{ 
+              'bg-gray-800/70 backdrop-blur-sm border-gray-700': scrolled, 
+              'bg-gray-800 border-transparent': !scrolled 
+          }">
+    
+    <div class="container mx-auto flex items-center justify-between py-4 px-6">
+      <a href="{% url 'home' %}" class="text-xl font-bold text-cyan-400">NetCore IT Solutions</a>
+      
+      <nav class="hidden md:flex items-center space-x-8">
+        {% is_active_nav 'home' 'service_detail' as services_active %}
+        <a href="{% url 'home' %}" 
+           class="hover:text-cyan-400 pb-1 transition-colors duration-300 {% if services_active %}border-b-2 border-cyan-400 text-cyan-400{% else %}border-b-2 border-transparent{% endif %}">
+           Услуги
+        </a>
+        
+        {% is_active_nav 'articles' as articles_active %}
+        <a href="{% url 'article_list' %}" 
+           class="hover:text-cyan-400 pb-1 transition-colors duration-300 {% if articles_active %}border-b-2 border-cyan-400 text-cyan-400{% else %}border-b-2 border-transparent{% endif %}">
+           Статьи
+        </a>
+
+        {% is_active_nav 'page_view' as page_active %}
+        <a href="{% url 'page_view' 'about' %}" 
+           class="hover:text-cyan-400 pb-1 transition-colors duration-300 {% if page_active and request.path == '/about/' %}border-b-2 border-cyan-400 text-cyan-400{% else %}border-b-2 border-transparent{% endif %}">
+           О компании
+        </a>
+        <a href="{% url 'page_view' 'contacts' %}" 
+           class="hover:text-cyan-400 pb-1 transition-colors duration-300 {% if page_active and request.path == '/contacts/' %}border-b-2 border-cyan-400 text-cyan-400{% else %}border-b-2 border-transparent{% endif %}">
+           Контакты
+        </a>
+      </nav>
+      
+      <button @click="open = !open" class="md:hidden text-gray-300 hover:text-white focus:outline-none" aria-label="Открыть меню">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path :class="{'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /><path :class="{'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+      </button>
+    </div>
+    
+    <div x-show="open" @click.away="open = false" class="md:hidden bg-gray-800 border-t border-gray-700">
+      <nav class="px-4 py-4 space-y-3">
+        <a href="{% url 'home' %}" class="block hover:text-cyan-400">Услуги</a>
+        <a href="{% url 'article_list' %}" class="block hover:text-cyan-400">Статьи</a>
+        <a href="{% url 'page_view' 'about' %}" class="block hover:text-cyan-400">О компании</a>
+        <a href="{% url 'page_view' 'contacts' %}" class="block hover:text-cyan-400">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-grow container mx-auto px-6 py-8">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="bg-gray-800 border-t border-gray-700 mt-auto">
+    <div class="container mx-auto px-6 py-6 text-center md:flex md:justify-between md:items-center">
+      <div class="mb-4 md:mb-0">
+        <p class="text-sm text-gray-300">© {% now "Y" %} NetCore IT Solutions. Все права защищены.</p>
+        <p class="text-sm text-gray-300">Профессиональная настройка и поддержка IT-инфраструктуры</p>
+      </div>
+      <div class="flex justify-center space-x-4">
+        <a href="#" target="_blank" class="text-gray-300 hover:text-cyan-400" aria-label="Наш Telegram"><i class="fab fa-telegram fa-lg"></i></a>
+        <a href="#" target="_blank" class="text-gray-300 hover:text-cyan-400" aria-label="Написать в WhatsApp"><i class="fab fa-whatsapp fa-lg"></i></a>
+        <a href="#" class="text-gray-300 hover:text-cyan-400" aria-label="Написать на Email"><i class="fas fa-envelope fa-lg"></i></a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

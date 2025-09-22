@@ -1,0 +1,28 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+  <div class="text-center mb-12">
+    <h1 class="text-4xl font-bold mb-2">IT-Решения для Вашего Бизнеса</h1>
+    <p class="text-lg text-gray-400">Профессиональная настройка и поддержка IT-инфраструктуры</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% for service in services %}
+      <div class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col items-center text-center transform hover:scale-105 transition-transform duration-300">
+
+        <!-- Место для изображения (если его нет - будет серая плашка) -->
+        {% if service.original_image %}
+            <img src="{{ service.image_thumbnail.url }}" alt="{{ service.title }}" class="h-40 w-full object-cover rounded-md mb-4">
+        {% else %}
+            <div class="h-40 w-full bg-gray-700 rounded-md mb-4 flex items-center justify-center">
+                <span class="text-gray-500">Нет изображения</span>
+            </div>
+        {% endif %}
+        
+        <h2 class="text-xl font-bold mb-2">{{ service.title }}</h2>
+        <p class="text-gray-400 flex-grow">{{ service.short_description }}</p>
+        <a href="{% url 'service_detail' service_slug=service.slug %}" class="mt-4 text-cyan-400 hover:text-cyan-300">Подробнее →</a>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

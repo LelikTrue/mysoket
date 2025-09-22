@@ -1,0 +1,54 @@
+{% extends "core/base.html" %}
+{% load markdown_deux_tags %}
+
+{% block title %}{{ post.meta_title|default:post.title }} - NetCore IT Solutions{% endblock %}
+
+{% block meta_description %}
+<meta name="description" content="{{ post.meta_description }}">
+{% endblock %}
+
+{% block content %}
+  <div class="max-w-4xl mx-auto">
+    
+    <!-- "Хлебные крошки" для навигации -->
+    <div class="text-sm text-gray-400 mb-4">
+      <a href="{% url 'home' %}" class="hover:text-cyan-400">Главная</a> &raquo;
+      <a href="{% url 'article_list' %}" class="hover:text-cyan-400">Статьи</a>
+      {% if post.category %}
+        &raquo; <a href="{{ post.category.get_absolute_url }}" class="hover:text-cyan-400">{{ post.category.name }}</a>
+      {% endif %}
+    </div>
+
+    <!-- Заголовок статьи -->
+    <h1 class="text-4xl font-bold text-cyan-400 mb-2">{{ post.title }}</h1>
+    
+    <!-- Мета-информация -->
+    <div class="text-sm text-gray-400 mb-8">
+      <span>Автор: {{ post.author.get_full_name|default:post.author.username }}</span> |
+      <span>Опубликовано: {{ post.published_date|date:"d E Y" }}</span>
+    </div>
+
+    <!-- Основной контент статьи -->
+    <div class="prose prose-invert max-w-none">
+      {{ post.content|markdown }}
+    </div>
+
+    <!-- Теги -->
+    {% if post.tags.all %}
+      <div class="mt-8 pt-4 border-t border-gray-700">
+        <span class="text-gray-400">Теги:</span>
+        {% for tag in post.tags.all %}
+          <a href="{{ tag.get_absolute_url }}" class="inline-block bg-gray-700 text-cyan-400 text-sm font-semibold px-3 py-1 rounded-full ml-2 hover:bg-gray-600">
+            {{ tag.name }}
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Кнопка "Назад" -->
+    <div class="mt-12">
+      <a href="{% url 'article_list' %}" class="text-cyan-400 hover:text-cyan-300">← Вернуться к списку статей</a>
+    </div>
+
+  </div>
+{% endblock %}

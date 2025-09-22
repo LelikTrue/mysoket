@@ -1,0 +1,86 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{ page_title }} - NetCore IT Solutions{% endblock %}
+
+{% block content %}
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold text-cyan-400 mb-8">{{ page_title }}</h1>
+    
+    <!-- Интерактивный поиск статей -->
+    <div 
+        x-data="{
+            searchQuery: '{{ request.GET.q|default:'' }}',
+            searchResults: [],
+            resultCount: 0,
+            isOpen: false,
+            isLoading: false,
+            search() {
+                if (this.searchQuery.length < 3) {
+                    this.searchResults = [];
+                    this.isOpen = false;
+                    return;
+                }
+                this.isLoading = true;
+                fetch(`/api/v1/articles/search/?q=${this.searchQuery}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        this.searchResults = data.results;
+                        this.resultCount = data.count;
+                        this.isOpen = true;
+                        this.isLoading = false;
+                    });
+            }
+        }"
+        class="relative mb-12"
+        @click.away="isOpen = false">
+
+      <form method="get" action="{% url 'article_list' %}" class="flex">
+        <input 
+            type="text" 
+            name="q"
+            x-model="searchQuery"
+            @input.debounce.300ms="search()"
+            @focus="isOpen = true"
+            class="w-full bg-gray-800 border border-gray-700 text-gray-200 rounded-l-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            placeholder="Найти статью..."
+            autocomplete="off">
+        <button type="submit" class="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-r-md transition-colors duration-300">
+          Искать
+        </button>
+      </form>
+
+      <div x-show="isOpen && resultCount > 0"
+           class="absolute top-full left-0 w-full bg-gray-800 border border-gray-700 rounded-b-md mt-1 z-10 shadow-lg"
+           x-transition>
+        <ul>
+          <template x-for="result in searchResults" :key="result.url">
+            <li class="border-b border-gray-700 last:border-b-0">
+              <a :href="result.url"
+                 class="block px-4 py-3 text-gray-200 hover:bg-gray-700 transition-colors duration-200">
+                <span class="block font-semibold hover:text-cyan-400" x-text="result.title"></span>
+                <span class="block text-sm text-gray-400 mt-1" x-text="result.excerpt"></span>
+              </a>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Облако тегов -->
+    <div class="mb-12">
+      <div class="flex flex-wrap gap-2 items-center">
+        {% for tag in all_tags %}
+          <a href="{{ tag.get_absolute_url }}" 
+             class="text-sm font-semibold px-3 py-1 rounded-full border transition-all duration-300 {% cycle 'border-cyan-400/50 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400' 'border-sky-400/50 text-sky-400 hover:bg-sky-400/10 hover:border-sky-400' 'border-teal-400/50 text-teal-400 hover:bg-teal-400/10 hover:border-teal-400' 'border-blue-400/50 text-blue-400 hover:bg-blue-400/10 hover:border-blue-400' %}">
+            {{ tag.name }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Контейнер для статей -->
+    <div id="articles-container">
+      {% include 'core/partials/article_list_partial.html' %}
+    </div>
+  </div>
+{% endblock %}

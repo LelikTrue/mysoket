@@ -1,0 +1,20 @@
+<!-- Path: core/templates/core/pages/about.html -->
+
+{% extends "core/base.html" %}
+{% load markdown_deux_tags %}
+
+{% block title %}{{ page.meta_title|default:page.title }} - NetCore IT Solutions{% endblock %}
+
+{% block meta_description %}
+<meta name="description" content="{{ page.meta_description }}">
+{% endblock %}
+
+{% block content %}
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold mb-8">{{ page.title }}</h1>
+    
+    <div class="prose prose-invert max-w-none">
+      {{ page.content|markdown }}
+    </div>
+  </div>
+{% endblock %}
