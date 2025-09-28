@@ -1,4 +1,4 @@
-<!-- Path: E:\python-Prog\it_solutions_hub\core\templates\core\base.html -->
+<!-- Path: core/templates/core/base.html -->
 {% load static %}
 {% load navigation_tags %}
 
@@ -6,14 +6,39 @@
 <html lang="ru" x-data="{ open: false }" class="h-full">
 <head>
   <meta charset="UTF-8">
-  <title>{% block title %}NetCore IT Solutions{% endblock %}</title>
+  <title>{% block title %}MySocket{% endblock %}</title>
   
   {% block meta_description %}
-  <meta name="description" content="NetCore IT Solutions: Профессиональная настройка и поддержка IT-инфраструктуры для малого и среднего бизнеса. Надежные IT-решения под ключ.">
+  <meta name="description" content="MySocket: Ваш IT-партнёр. Профессиональная настройка и поддержка IT-инфраструктуры для малого и среднего бизнеса.">
   {% endblock %}
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
+  <!-- === НАЧАЛО: Favicon === -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicons/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicons/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicons/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'favicons/site.webmanifest' %}">
+  <link rel="mask-icon" href="{% static 'favicons/safari-pinned-tab.svg' %}" color="#22d3ee">
+  <link rel="shortcut icon" href="{% static 'favicons/favicon.ico' %}">
+  <meta name="msapplication-TileColor" content="#0f172a">
+  <meta name="msapplication-config" content="{% static 'favicons/browserconfig.xml' %}">
+  <meta name="theme-color" content="#0f172a">
+  <!-- === КОНЕЦ: Favicon === -->
+
+  {% block opengraph_tags %}
+    <!-- OpenGraph мета-теги (по умолчанию) -->
+    <meta property="og:site_name" content="MySocket: Ваш IT-партнёр">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{% block og_title %}{% block title_for_og %}MySocket: Ваш IT-партнёр{% endblock %}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{% block description_for_og %}Профессиональная настройка и поддержка IT-инфраструктуры для малого и среднего бизнеса.{% endblock %}{% endblock %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="{{ request.scheme }}://{{ site.domain }}{% static 'images/logo_og.png' %}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="ru_RU">
+  {% endblock opengraph_tags %}
+
   <link href="{% static 'css/output.css' %}" rel="stylesheet"> 
   <script src="//unpkg.com/alpinejs" defer></script>
   <script src="https://unpkg.com/htmx.org@1.9.10"></script>
@@ -32,7 +57,12 @@
           }">
     
     <div class="container mx-auto flex items-center justify-between py-4 px-6">
-      <a href="{% url 'home' %}" class="text-xl font-bold text-cyan-400">NetCore IT Solutions</a>
+      
+      <!-- === НАЧАЛО: Логотип === -->
+      <a href="{% url 'home' %}" aria-label="На главную MySocket">
+        <img src="{% static 'images/logo.png' %}" alt="Логотип MySocket" class="h-9 w-auto">
+      </a>
+      <!-- === КОНЕЦ: Логотип === -->
       
       <nav class="hidden md:flex items-center space-x-8">
         {% is_active_nav 'home' 'service_detail' as services_active %}
@@ -59,7 +89,7 @@
       </nav>
       
       <button @click="open = !open" class="md:hidden text-gray-300 hover:text-white focus:outline-none" aria-label="Открыть меню">
-        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path :class="{'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /><path :class="{'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path :class="{'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /><path :class="{'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin-round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
       </button>
     </div>
     
@@ -80,7 +110,7 @@
   <footer class="bg-gray-800 border-t border-gray-700 mt-auto">
     <div class="container mx-auto px-6 py-6 text-center md:flex md:justify-between md:items-center">
       <div class="mb-4 md:mb-0">
-        <p class="text-sm text-gray-300">© {% now "Y" %} NetCore IT Solutions. Все права защищены.</p>
+        <p class="text-sm text-gray-300">© {% now "Y" %} MySocket. Все права защищены.</p>
         <p class="text-sm text-gray-300">Профессиональная настройка и поддержка IT-инфраструктуры</p>
       </div>
       <div class="flex justify-center space-x-4">
@@ -97,35 +127,6 @@
       Содержимое этого блока будет отображаться только на реальном сервере (когда DEBUG=False).
       На локальном сервере для разработки (DEBUG=True) этот блок будет проигнорирован.
     -->
-
-    <!-- Yandex.Metrika counter -->
-    <!-- <script type="text/javascript" >
-      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-      m[i].l=1*new Date();
-      for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) {return;}}
-      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-      ym(00000000, "init", {
-          clickmap:true,
-          trackLinks:true,
-          accurateTrackBounce:true
-      });
-    </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/00000000" style="position:absolute; left:-9999px;" alt="" /></div></noscript> -->
-    <!-- /Yandex.Metrika counter -->
-
-    <!-- Google Analytics 4 -->
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-XXXXXXXXXX');
-    </script> -->
-    <!-- /Google Analytics 4 -->
-
   {% endif %}
 
 </body>

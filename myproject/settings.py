@@ -1,4 +1,4 @@
-# Path: E:\python-Prog\it_solutions_hub\myproject\settings.py
+# Path: myproject/settings.py
 
 from pathlib import Path
 
@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'django.contrib.sitemaps',
 
     # Наши приложения
@@ -62,7 +63,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'core.context_processors.debug',  # <-- ВОТ ЭТА СТРОКА
+                'core.context_processors.debug',
+                'core.context_processors.site_info',
             ],
         },
     },
@@ -135,3 +137,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Настройки для django.contrib.sites
+SITE_ID = 1

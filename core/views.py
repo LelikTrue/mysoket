@@ -52,7 +52,22 @@ def article_list_view(request):
 
 def article_detail_view(request, post_slug):
     post = get_object_or_404(Article, slug=post_slug, is_published=True)
-    context = {'post': post}
+    
+    # <<< НАЧАЛО: Логика для похожих статей
+    related_posts = Article.objects.none() # Создаем пустой QuerySet по умолчанию
+    if post.category:
+        related_posts = Article.objects.filter(
+            category=post.category, 
+            is_published=True
+        ).exclude(
+            pk=post.pk
+        )[:4] # Исключаем текущую статью и берем 4 похожих
+    # <<< КОНЕЦ: Логика для похожих статей
+
+    context = {
+        'post': post,
+        'related_posts': related_posts, # <<< Добавляем в контекст
+    }
     return render(request, 'core/article_detail.html', context)
 
 def article_category_view(request, category_slug):

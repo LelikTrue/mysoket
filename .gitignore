@@ -5,6 +5,7 @@
 __pycache__/
 local_settings.py
 db.sqlite3
+db_data.json
 db.sqlite3-journal
 media/
 static_root/
