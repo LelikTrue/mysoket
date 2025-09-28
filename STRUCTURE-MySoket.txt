@@ -1,0 +1,50 @@
+e:\python-Prog\it_solutions_hub
+├── .git/
+├── .vscode/
+│   └── settings.json
+├── core/
+│   ├── migrations/
+│   ├── static/
+│   │   ├── css/
+│   │   │   ├── admin_dark.css
+│   │   │   └── output.css
+│   │   └── src/
+│   │       └── input.css
+│   ├── templates/
+│   │   ├── admin/
+│   │   │   └── base_site.html
+│   │   └── core/
+│   │       ├── pages/
+│   │       ├── partials/
+│   │       ├── article_detail.html
+│   │       ├── article_list.html
+│   │       ├── base.html
+│   │       ├── home.html
+│   │       └── service_detail.html
+│   ├── templatetags/
+│   │   ├── __init__.py
+│   │   └── navigation_tags.py
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── sitemaps.py
+│   ├── urls.py
+│   └── views.py
+├── media/
+├── myproject/
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── node_modules/
+├── staticfiles/
+├── .gitignore
+├── db.sqlite3
+├── manage.py
+├── package.json
+├── package-lock.json
+├── postcss.config.js
+├── requirements.txt
+└── tailwind.config.js

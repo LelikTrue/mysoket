@@ -1,3 +1,4 @@
+<!-- Path: E:\python-Prog\it_solutions_hub\core\templates\core\base.html -->
 {% load static %}
 {% load navigation_tags %}
 
@@ -15,14 +16,14 @@
   
   <link href="{% static 'css/output.css' %}" rel="stylesheet"> 
   <script src="//unpkg.com/alpinejs" defer></script>
-  <script src="https://unpkg.com/htmx.org@1.9.10"></script> {# <-- 1. htmx ПОДКЛЮЧЕН #}
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen"
       x-data="{ scrolled: false }"
       @scroll.window="scrolled = (window.scrollY > 10)"
-      hx-headers='{"X-Requested-With": "XMLHttpRequest"}'> {# <-- 2. АТРИБУТ ДЛЯ htmx ДОБАВЛЕН #}
+      hx-headers='{"X-Requested-With": "XMLHttpRequest"}'>
 
   <header class="sticky top-0 z-50 border-b transition-colors duration-300"
           :class="{ 
@@ -89,5 +90,43 @@
       </div>
     </div>
   </footer>
+
+  {% if not debug %}
+    <!-- 
+      Блок для скриптов аналитики.
+      Содержимое этого блока будет отображаться только на реальном сервере (когда DEBUG=False).
+      На локальном сервере для разработки (DEBUG=True) этот блок будет проигнорирован.
+    -->
+
+    <!-- Yandex.Metrika counter -->
+    <!-- <script type="text/javascript" >
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();
+      for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) {return;}}
+      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(00000000, "init", {
+          clickmap:true,
+          trackLinks:true,
+          accurateTrackBounce:true
+      });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/00000000" style="position:absolute; left:-9999px;" alt="" /></div></noscript> -->
+    <!-- /Yandex.Metrika counter -->
+
+    <!-- Google Analytics 4 -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-XXXXXXXXXX');
+    </script> -->
+    <!-- /Google Analytics 4 -->
+
+  {% endif %}
+
 </body>
 </html>
